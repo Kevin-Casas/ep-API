@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   edificio.associate = function(models) {
     // associations can be defined here
+      edificio.hasMany(models.aula, 
+      {
+        as: "aula",
+        foreignKey: "id_edificio"
+      })
   };
   return edificio;
 };

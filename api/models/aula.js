@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   aula.associate = function(models) {
     // associations can be defined here
+    aula.belongsTo(models.edificio, 
+      {
+        as: "Edificio-Relacionado",
+        foreignKey: "id_edificio"
+    })
   };
   return aula;
 };
