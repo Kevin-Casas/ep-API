@@ -4,8 +4,11 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
+  const {pag = 1, limite = 5} = req.query;
   models.edificio
     .findAll({
+      limit: 5,
+      offset: (pag - 1) * limite,
       attributes: ["id", "nombre", "direccion", "tipo"],
       include:[{as:"aula", model:models.aula, attributes:["id", "Nombre", "tipo"]}]
     })
