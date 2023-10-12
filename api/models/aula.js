@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     id_edificio: DataTypes.INTEGER
   }, {});
   aula.associate = function(models) {
-    // associations can be defined here
+    // Asociación
     aula.belongsTo(models.edificio, 
       {
         as: "Edificio-Relacionado",

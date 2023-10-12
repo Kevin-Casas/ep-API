@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     tipo: DataTypes.STRING
   }, {});
   edificio.associate = function(models) {
-    // associations can be defined here
+    // Asociación
       edificio.hasMany(models.aula, 
       {
         as: "aula",

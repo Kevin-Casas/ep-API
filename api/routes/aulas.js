@@ -7,8 +7,10 @@ router.get("/", (req, res) => {
   const {pag= 1, limite= 10} = req.query;
   models.aula
     .findAll({
+      //Paginación
       limit: limite,
       offset: (pag - 1) * limite,
+      //
       attributes: ["id", "nombre", "tipo", "id_edificio"],
       include:[{as:"Edificio-Relacionado", model:models.edificio, attributes:["id", "Nombre", "direccion"]}]
     })
