@@ -7,7 +7,8 @@ var carrerasRouter = require('./routes/carreras');
 var aulasRouter = require('./routes/aulas');
 var edificiosRouter = require('./routes/edificios');
 var materiasRouter = require('./routes/materias');
-var authRouter = require('./routes');
+var routes = require('./routes');
+
 
 
 var app = express();
@@ -22,12 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/auth', routes);
 app.use('/car', carrerasRouter);
 app.use('/aul', aulasRouter);
 app.use('/edi', edificiosRouter);
 app.use('/mat', materiasRouter);
-app.use('/signup', authRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
