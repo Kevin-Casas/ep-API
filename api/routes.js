@@ -8,9 +8,9 @@ const AuthController = require('./controllers/AuthController');
 router.get('/', (req, res) => res.json({hello: 'Login de usuario UNAHUR'}));
 
 //Login
-router.post('/api/login', AuthController.login);
+router.post('/login', AuthController.login);
 
 //Registro
-router.post('/api/registrar', AuthController.registrar);
+router.post('/registrar', AuthController.registrar);
 
 module.exports = router;
