@@ -2,6 +2,38 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Carrera:
+ *      type: object
+ *      required:
+ *        - nombre
+ *      properties:
+ *        nombre:
+ *          type: string
+ *          description: Nombre de carrera
+ *      example:
+ *        nombre: Licenciatura en informatica
+ */
+
+/**
+ * @swagger
+ * /car:
+ *  get:
+ *    summary: Retorna todas las carreras
+ *    tags: [Carrera]
+ *    responses:
+ *      200:
+ *        description: Todas las carreras
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Carrera'       
+ */
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.carrera
@@ -12,6 +44,23 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
+/**
+ * @swagger
+ * /car:
+ *  post:
+ *    summary: Crea una nueva carrera
+ *    tags: [Carrera]
+ *    requestBody: 
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Carrera'
+ *    responses:
+ *      200:
+ *        description: Nueva carrera creada
+ */
 router.post("/", (req, res) => {
   models.carrera
     .create({ nombre: req.body.nombre })
@@ -37,6 +86,30 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
+/**
+ * @swagger
+ * /car/{id}:
+ *  get:
+ *    summary: Retorna una carrera
+ *    tags: [Carrera]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id de la carrera
+ *    responses:
+ *      200:
+ *        description: Una carrera
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Carrera'
+ *      404:
+ *        description: La carrera no existe     
+ */
 router.get("/:id", (req, res) => {
   findCarrera(req.params.id, {
     onSuccess: carrera => res.send(carrera),
@@ -45,6 +118,32 @@ router.get("/:id", (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /car/{id}:
+ *  put:
+ *    summary: Actualiza una carrera
+ *    tags: [Carrera]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id de la carrera
+ *    requestBody: 
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Carrera'
+ *    responses:
+ *      200:
+ *        description: Carrera actualizada
+ *      404:
+ *        description: La carrera no existe    
+ */
 router.put("/:id", (req, res) => {
   const onSuccess = carrera =>
     carrera
@@ -66,6 +165,25 @@ router.put("/:id", (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /car/{id}:
+ *  delete:
+ *    summary: Elimina una carrera
+ *    tags: [Carrera]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id de la carrera
+ *    responses:
+ *      200:
+ *        description: Carrera eliminada
+ *      404:
+ *        description: La carrera no existe      
+ */
 router.delete("/:id", (req, res) => {
   const onSuccess = carrera =>
     carrera

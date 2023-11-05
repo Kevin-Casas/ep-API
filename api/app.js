@@ -8,6 +8,24 @@ var aulasRouter = require('./routes/aulas');
 var edificiosRouter = require('./routes/edificios');
 var materiasRouter = require('./routes/materias');
 var routes = require('./routes');
+// Swagger
+const swaggerUI = require("swagger-ui-express");
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerSpec = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "ep-API",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:3001"
+      }
+    ],
+  },
+  apis: ['./routes/*.js', './routes.js'],
+};
 
 
 
@@ -28,6 +46,8 @@ app.use('/car', carrerasRouter);
 app.use('/aul', aulasRouter);
 app.use('/edi', edificiosRouter);
 app.use('/mat', materiasRouter);
+// Swagger
+app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpec)));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

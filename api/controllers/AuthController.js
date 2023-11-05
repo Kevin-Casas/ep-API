@@ -56,12 +56,7 @@ module.exports = {
 
 
     //Encriptacion de contraseña
-
-    if(req.body.contraseña.lenght >= 6) {
-      contraseña = bcrypt.hashSync(req.body.contraseña, Number.parseInt(authConfig.rounds));
-    } else {
-      res.status(500).json({msg: "La contraseña debe contener al menos 6 caracteres"});
-    }
+    contraseña = bcrypt.hashSync(req.body.contraseña, Number.parseInt(authConfig.rounds));
    
 
     //Creacion de usuario

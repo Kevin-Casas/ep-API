@@ -2,6 +2,43 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Aula:
+ *      type: object
+ *      required:
+ *        - nombre
+ *        - tipo
+ *      properties:
+ *        nombre:
+ *          type: string
+ *          description: Nombre de aula
+ *        tipo:
+ *          type: string
+ *          description: Tipo de aula
+ *      example:
+ *        nombre: MV 101
+ *        tipo: Mixto
+ */
+
+/**
+ * @swagger
+ * /aul:
+ *  get:
+ *    summary: Retorna todas las aulas
+ *    tags: [Aula]
+ *    responses:
+ *      200:
+ *        description: Todas las aulas
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Aula'       
+ */
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   const {pag= 1, limite= 10} = req.query;
@@ -18,6 +55,23 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
+/**
+ * @swagger
+ * /aul:
+ *  post:
+ *    summary: Crea una nueva aula
+ *    tags: [Aula]
+ *    requestBody: 
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Aula'
+ *    responses:
+ *      200:
+ *        description: Nueva aula creada
+ */
 router.post("/", (req, res) => {
   models.aula
     .create({ nombre: req.body.nombre, tipo: req.body.tipo, id_edificio: req.body.id_edificio })
@@ -43,6 +97,30 @@ const findAula = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
+/**
+ * @swagger
+ * /aul/{id}:
+ *  get:
+ *    summary: Retorna un aula
+ *    tags: [Aula]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id del aula
+ *    responses:
+ *      200:
+ *        description: Un aula
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Aula'
+ *      404:
+ *        description: El aula no existe     
+ */
 router.get("/:id", (req, res) => {
   findAula(req.params.id, {
     onSuccess: aula => res.send(aula),
@@ -51,6 +129,32 @@ router.get("/:id", (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /aul/{id}:
+ *  put:
+ *    summary: Actualiza un aula
+ *    tags: [Aula]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id del aula
+ *    requestBody: 
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Aula'
+ *    responses:
+ *      200:
+ *        description: Aula actualizada
+ *      404:
+ *        description: El aula no existe    
+ */
 router.put("/:id", (req, res) => {
   const onSuccess = aula =>
     aula
@@ -72,6 +176,25 @@ router.put("/:id", (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /aul/{id}:
+ *  delete:
+ *    summary: Elimina un aula
+ *    tags: [Aula]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: El id del aula
+ *    responses:
+ *      200:
+ *        description: Aula eliminada
+ *      404:
+ *        description: El aula no existe      
+ */
 router.delete("/:id", (req, res) => {
   const onSuccess = aula =>
     aula
